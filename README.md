@@ -6,7 +6,7 @@
 [cookbook]: https://supermarket.chef.io/cookbooks/windows_logrotate
 [win]: https://ci.appveyor.com/project/dhoer/chef-windows-logrotate
 
-Installs/configures 
+Installs/configures Ken Salter's 
 [LogRotate for Windows](https://github.com/plecos/logrotatewin/).
 
 This is a Windows implementation of the logrotate utility found in 
@@ -16,7 +16,7 @@ and files as the Linux version.
 ## Requirements
 
 - Chef 12.6+
-- .NET Framework v4.5+
+- .NET Framework v4.5
 
 ### Platform
 
@@ -27,16 +27,35 @@ and files as the Linux version.
 Configure logrotate:
 
 ```ruby
-windows_logrotate 'service name' do
-  program 'C:\Windows\System32\java.exe'
-  args '-jar C:/path/to/my-executable.jar'
-  action :config
+windows_logrotate 'logrotate test' do
+  username node['windows_logrotate_test']['username']
+  password node['windows_logrotate_test']['password']
+  run_immediately true
+  sensitive false
+  conf [
+    {
+      path: 'C:\test.log',
+      frequency: 'daily',
+      rotate: 5,
+      options: %w(missingok compress delaycompress copytruncate notifempty),
+      postrotate: <<-EOF
+        @echo off
+        echo This is a test
+        echo parameter pass %1
+        VER | TIME > TEMP.BAT
+        ECHO SET TIME=%%3>CURRENT.BAT
+        DEL TEMP.BAT
+        DEL CURRENT.BAT
+        ECHO It's %TIME% now
+      EOF
+    }
+  ]
 end
 ```
 
 Cookbook Matchers
 
-- config_windows_logrotate(servicename)
+- enable_windows_logrotate(servicename)
 
 ## Getting Help
 
