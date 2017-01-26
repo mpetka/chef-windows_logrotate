@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/appveyor/ci/dhoer/chef-windows_logrotate/master.svg?style=flat-square)][win]
 
 [cookbook]: https://supermarket.chef.io/cookbooks/windows_logrotate
-[win]: https://ci.appveyor.com/project/dhoer/chef-windows_logrotate
+[win]: https://ci.appveyor.com/project/dhoer/chef-windows-logrotate
 
 Installs/configures 
 [LogRotate for Windows](https://github.com/plecos/logrotatewin/).
