@@ -9,13 +9,12 @@ windows_logrotate 'logrotate test' do
   run_immediately true
   sensitive false
   conf <<-EOF
-missingok
-compress
-delaycompress
-copytruncate
-notifempty
-
 C:\\test.log {
+  missingok
+  compress
+  delaycompress
+  copytruncate
+  notifempty
 	rotate 5
 	daily
 	prerotate
