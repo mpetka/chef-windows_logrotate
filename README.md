@@ -86,7 +86,7 @@ Default: `windows_logrotate`.
 Default: `logrotate.conf.erb`.
 * `schtask_tmpl` - Sets the schtask template source. 
 Default: `schtask.xml.erb`.
-* `sensitive` - Suppress logging sensitive information.  
+* `sensitive` - Suppress logging sensitive information. 
 Default: `true`.
 
 ## ChefSpec Matchers
