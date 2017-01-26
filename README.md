@@ -1,7 +1,7 @@
 # Windows LogRotate Cookbook
 
 [![Cookbook Version](http://img.shields.io/cookbook/v/windows_logrotate.svg?style=flat-square)][cookbook]
-[![Build Status](https://img.shields.io/appveyor/ci/dhoer/chef-windows_logrotate/master.svg?style=flat-square)][win]
+[![Build Status](https://img.shields.io/appveyor/ci/dhoer/chef-windows-logrotate/master.svg?style=flat-square)][win]
 
 [cookbook]: https://supermarket.chef.io/cookbooks/windows_logrotate
 [win]: https://ci.appveyor.com/project/dhoer/chef-windows-logrotate
