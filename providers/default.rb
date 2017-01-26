@@ -11,32 +11,26 @@ action :enable do
     end
   end
 
-  logrotate_conf = {
-    # The path should be a space separated list of quoted filesystem paths
-    path: Array(new_resource.path).map { |path| path.to_s.inspect }.join(' '),
-    frequency: new_resource.frequency,
-    # directives: handle_options(new_resource),
-    # scripts: handle_scripts(new_resource),
-    # configurables: handle_configurables(new_resource),
-  }
-
-  conf_path = "#{node['windows_logrotate']['install_dir']}\\Content\\#{new_resource.name}.conf"
+  content_dir = "#{node['windows_logrotate']['install_dir']}\\Content"
+  conf_path = "#{content_dir}\\#{new_resource.name}.conf"
 
   template conf_path do
     source new_resource.conf_tmpl
     cookbook new_resource.cookbook
-    variables logrotate_conf
+    variables({ confs: new_resource.conf.kind_of?(Array) ? new_resource.conf : Array(new_resource.conf) })
     notifies :run, "execute[schtask #{new_resource.name}]", :delayed
   end
+
+  state_path = "#{content_dir}\\#{new_resource.name}.status"
 
   schtask_conf = {
     username: new_resource.username,
     command: "#{node['windows_logrotate']['install_dir']}\\logrotate.exe",
-    arguments: "#{verbose_flag}#{force_flag} \"#{conf_path}\"",
-    working_directory: node['windows_logrotate']['install_dir']
+    arguments: "#{verbose_flag}#{force_flag}-s \"#{state_path}\" \"#{conf_path}\"",
+    working_directory: content_dir
   }
 
-  schtask_path = "#{node['windows_logrotate']['install_dir']}\\Content\\#{new_resource.name}.xml"
+  schtask_path = "#{content_dir}\\#{new_resource.name}.xml"
 
   template schtask_path do
     source new_resource.schtask_tmpl
@@ -50,17 +44,19 @@ action :enable do
     command "schtasks /Create /F /TN \"#{new_resource.name}\" /XML \"#{schtask_path}\" /NP " \
         "/RU \"#{new_resource.username}\" /RP \"#{new_resource.password}\""
     action :nothing
+    notifies :run, "execute[run schtask #{new_resource.name} immediately]", :immediately
+  end
+
+  execute "run schtask #{new_resource.name} immediately" do
+    sensitive new_resource.sensitive
+    command "schtasks /Run /TN \"#{new_resource.name}\" "
+    action :nothing
+    only_if { new_resource.run_immediately }
   end
 end
 
-# action :disable do
-#   file "#{node['windows_logrotate']['install_dir']/#{new_resource.name}" do
-#     action :delete
-#   end
-# end
-
 def force_flag
-  if  new_resource.verbose
+  if new_resource.force
     '-f '
   else
     ''
@@ -68,7 +64,7 @@ def force_flag
 end
 
 def verbose_flag
-  if  new_resource.verbose
+  if new_resource.verbose
     '-v '
   else
     ''

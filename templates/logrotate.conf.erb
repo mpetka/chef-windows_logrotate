@@ -1,4 +1,34 @@
-C:\test.log {
-	rotate 5
-	daily
+<% @confs.each do |conf| %>
+<%= conf[:path] %> {
+  <% if conf[:frequency] %>
+  <%= conf[:frequency] %>
+  <% end %>
+  <% if conf[:rotate] %>
+  rotate <%= conf[:rotate] %>
+  <% end %>
+  <% conf[:options] && conf[:options].each do |name| %>
+  <%= name %>
+  <% end %>
+  <% if conf[:firstaction] %>
+  firstaction
+    <%= conf[:firstaction] %>
+  endscript
+  <% end %>
+  <% if conf[:prerotate] %>
+  prerotate
+    <%= conf[:prerotate] %>
+  endscript
+  <% end %>
+  <% if conf[:postrotate] %>
+  postrotate
+    <%= conf[:postrotate] %>
+  endscript
+  <% end %>
+  <% if conf[:lastaction] %>
+  lastaction
+    <%= conf[:lastaction] %>
+  endscript
+  <% end %>
 }
+
+<% end %>
