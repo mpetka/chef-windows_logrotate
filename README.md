@@ -12,9 +12,8 @@ Installs/configures Ken Salter's
 This is a Windows implementation of the logrotate utility found in 
 Linux platforms. 
 
-Supported configuration file options: 
+Supported logrotate configuration options: 
 https://sourceforge.net/p/logrotatewin/wiki/LogRotate/#configuration-file
-
 
 ## Requirements
 
@@ -39,13 +38,12 @@ windows_logrotate 'logrotate test' do
   run_immediately true
   sensitive false
   conf <<-EOF
-missingok
-compress
-delaycompress
-copytruncate
-notifempty
-
 C:\\test.log {
+    missingok
+    compress
+    delaycompress
+    copytruncate
+    notifempty
 	rotate 5
 	daily
 	prerotate
@@ -63,19 +61,64 @@ C:\\test.log {
 end
 ```
 
+### Attributes
+
+* `name` -  The name of logrotate configuration file to create. 
+Defaults to resource block name.
+* `username` -  The username to create scheduled task as. 
+Default: `Administrator`.
+* `password` - Required to create scheduled task. 
+* `conf` - Required logroate configuration. 
+* `verbose` - Turns on verbose mode. Sensitive will need to be false in
+order to see output.
+* `force` - Tells logrotate to force the rotation, even if it doesn't 
+think this is necessary. Sometimes this is useful after adding new 
+entries to a logrotate config file, or if old log files have been 
+removed by hand, as the new files will be created, and logging will 
+continue correctly.
+* `run_immediately` - Runs scheduled task immediately after creating or 
+updating logrotate configuration.
+* `cookbook` - The cookbook that contains the template for 
+logrotate conf. Users can provide their own template by setting this 
+attribute to point at a different cookbook. 
+Default: `windows_logrotate`.
+* `conf_tmpl` - Sets the conf template source. 
+Default: `logrotate.conf.erb`.
+* `schtask_tmpl` - Sets the schtask template source. 
+Default: `schtask.xml.erb`.
+* `sensitive` - Suppress logging sensitive information.  
+Default: `true`.
+
+## ChefSpec Matchers
+
+This cookbook includes custom 
+[ChefSpec](https://github.com/sethvargo/chefspec) matchers you can 
+use to test your own cookbooks.
+
+Example Matcher Usage
+
+```ruby
+expect(chef_run).to enable_windows_logrotate('resource_name')
+```
+
 Cookbook Matchers
 
-- enable_windows_logrotate(servicename)
+- enable_windows_logrotate(resource_name)
 
 ## Getting Help
 
-- Ask specific questions on [Stack Overflow](http://stackoverflow.com/questions/tagged/windows+logrotate).
-- Report bugs and discuss potential features in [Github issues](https://github.com/dhoer/chef-windows_logrotate/issues).
+- Ask specific questions on 
+[Stack Overflow](http://stackoverflow.com/questions/tagged/windows+logrotate).
+- Report bugs and discuss potential features in 
+[Github issues](https://github.com/dhoer/chef-windows_logrotate/issues).
 
 ## Contributing
 
-Please refer to [CONTRIBUTING](https://github.com/dhoer/chef-nssm/blob/master/CONTRIBUTING.md).
+Please refer to 
+[CONTRIBUTING](https://github.com/dhoer/chef-windows_logrotate/blob/master/CONTRIBUTING.md).
 
 ## License
 
-MIT - see the accompanying [LICENSE](https://github.com/dhoer/chef-nssm/blob/master/LICENSE.md) file for details.
+MIT - see the accompanying 
+[LICENSE](https://github.com/dhoer/chef-windows_logrotate/blob/master/LICENSE.md) 
+file for details.
