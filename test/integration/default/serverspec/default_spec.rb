@@ -5,7 +5,7 @@ describe 'windows_logrotate' do
     it { should be_file }
   end
 
-  describe file('C:\logrotate\logrotate.status') do
+  describe file('C:\logrotate\Content\logrotate test.status') do
     it { should be_file }
   end
 
@@ -18,7 +18,7 @@ describe 'windows_logrotate' do
   end
 
   describe file('C:\test.log') do
-    it { should_not be_file }
+    it { should be_file }
   end
 
   describe file('C:\test.log.1') do

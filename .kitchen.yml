@@ -16,3 +16,6 @@ suites:
     run_list:
       - windows_logrotate_test::default
     attributes:
+      windows_logrotate_test:
+        username: vagrant
+        password: vagrant

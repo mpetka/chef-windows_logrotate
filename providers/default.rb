@@ -17,7 +17,7 @@ action :enable do
   template conf_path do
     source new_resource.conf_tmpl
     cookbook new_resource.cookbook
-    variables({ confs: new_resource.conf.kind_of?(Array) ? new_resource.conf : Array(new_resource.conf) })
+    variables confs: new_resource.conf.is_a?(Array) ? new_resource.conf : Array(new_resource.conf)
     notifies :run, "execute[schtask #{new_resource.name}]", :delayed
   end
 

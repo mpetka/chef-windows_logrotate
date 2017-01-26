@@ -4,8 +4,8 @@ cookbook_file "#{ENV['SYSTEMDRIVE']}\\test.log" do
 end
 
 windows_logrotate 'logrotate test' do
-  username 'vagrant'
-  password 'vagrant'
+  username node['windows_logrotate_test']['username']
+  password node['windows_logrotate_test']['password']
   run_immediately true
   sensitive false
   conf [

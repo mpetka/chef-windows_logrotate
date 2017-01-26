@@ -9,25 +9,12 @@
   <% conf[:options] && conf[:options].each do |name| %>
   <%= name %>
   <% end %>
-  <% if conf[:firstaction] %>
-  firstaction
-    <%= conf[:firstaction] %>
+  <% %w(firstaction prerotate postrotate lastaction).each do |script| %>
+    <% if conf[script.to_sym] %>
+  <%= script %>
+  <%= conf[script.to_sym] %>
   endscript
-  <% end %>
-  <% if conf[:prerotate] %>
-  prerotate
-    <%= conf[:prerotate] %>
-  endscript
-  <% end %>
-  <% if conf[:postrotate] %>
-  postrotate
-    <%= conf[:postrotate] %>
-  endscript
-  <% end %>
-  <% if conf[:lastaction] %>
-  lastaction
-    <%= conf[:lastaction] %>
-  endscript
+    <% end %>
   <% end %>
 }
 

@@ -18,3 +18,7 @@ suites:
   - name: default
     run_list:
       - windows_logrotate_test::default
+    attributes:
+      windows_logrotate_test:
+        username: <%= ENV["machine_user"] %>
+        password: <%= ENV["machine_pass"] %>
