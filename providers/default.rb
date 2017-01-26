@@ -14,6 +14,7 @@ action :enable do
   content_dir = "#{node['windows_logrotate']['install_dir']}\\Content"
   conf_path = "#{content_dir}\\#{new_resource.name}.conf"
 
+  # use template instead of file to manage Windows line endings
   template conf_path do
     source new_resource.conf_tmpl
     cookbook new_resource.cookbook
