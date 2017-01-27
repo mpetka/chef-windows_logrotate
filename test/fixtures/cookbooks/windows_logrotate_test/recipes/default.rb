@@ -15,18 +15,18 @@ C:\\test.log {
   delaycompress
   copytruncate
   notifempty
-	rotate 5
-	daily
-	prerotate
-		@echo off
-		echo This is a test
-		echo parameter pass %1
-		VER | TIME > TEMP.BAT
-		ECHO SET TIME=%%3>CURRENT.BAT
-		DEL TEMP.BAT
-		DEL CURRENT.BAT
-		ECHO It's %TIME% now
-	endscript
+  rotate 5
+  daily
+  prerotate
+    @echo off
+    echo This is a test
+    echo parameter pass %1
+    VER | TIME > TEMP.BAT
+    ECHO SET TIME=%%3>CURRENT.BAT
+    DEL TEMP.BAT
+    DEL CURRENT.BAT
+    ECHO It's %TIME% now
+  endscript
 }
   EOF
 end
